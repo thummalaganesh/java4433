@@ -5,6 +5,9 @@
         "subscriptionId": {
             "type": "string"
         },
+        "resourceGroupName": {
+            "type": "string"
+        },
         "name": {
             "type": "string"
         },
@@ -15,6 +18,9 @@
             "type": "string"
         },
         "serverFarmResourceGroup": {
+            "type": "string"
+        },
+        "oidcUserIdentityName": {
             "type": "string"
         },
         "alwaysOn": {
@@ -49,9 +55,9 @@
             "name": "[parameters('name')]",
             "type": "Microsoft.Web/sites",
             "location": "[parameters('location')]",
-            "tags": {},
+            "tags": null,
             "dependsOn": [
-                "microsoft.insights/components/arm007",
+                "microsoft.insights/components/java4433",
                 "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
             ],
             "properties": {
@@ -60,7 +66,7 @@
                     "appSettings": [
                         {
                             "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-                            "value": "[reference('microsoft.insights/components/arm007', '2015-05-01').ConnectionString]"
+                            "value": "[reference('microsoft.insights/components/java4433', '2015-05-01').ConnectionString]"
                         },
                         {
                             "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
@@ -80,7 +86,21 @@
                 "virtualNetworkSubnetId": null,
                 "httpsOnly": true,
                 "publicNetworkAccess": "Enabled"
-            }
+            },
+            "resources": [
+                {
+                    "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+                    "apiVersion": "2022-09-01",
+                    "name": "[concat(parameters('name'), '/scm')]",
+                    "kind": "string",
+                    "properties": {
+                        "allow": false
+                    },
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', parameters('name'))]"
+                    ]
+                }
+            ]
         },
         {
             "apiVersion": "2018-11-01",
@@ -88,7 +108,7 @@
             "type": "Microsoft.Web/serverfarms",
             "location": "[parameters('location')]",
             "kind": "linux",
-            "tags": {},
+            "tags": null,
             "dependsOn": [],
             "properties": {
                 "name": "[parameters('hostingPlanName')]",
@@ -105,10 +125,10 @@
         },
         {
             "apiVersion": "2020-02-02-preview",
-            "name": "arm007",
+            "name": "java4433",
             "type": "microsoft.insights/components",
             "location": "eastus",
-            "tags": {},
+            "tags": null,
             "dependsOn": [
                 "newWorkspaceTemplate"
             ],
@@ -117,7 +137,7 @@
                 "Request_Source": "IbizaWebAppExtensionCreate",
                 "Flow_Type": "Redfield",
                 "Application_Type": "web",
-                "WorkspaceResourceId": "/subscriptions/93934b5f-c9dc-4078-8e65-52910d372a99/resourceGroups/DefaultResourceGroup-EUS/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-93934b5f-c9dc-4078-8e65-52910d372a99-EUS"
+                "WorkspaceResourceId": "/subscriptions/5705e3a2-4b17-4e18-ba2c-30634f0114e3/resourceGroups/DefaultResourceGroup-EUS/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-5705e3a2-4b17-4e18-ba2c-30634f0114e3-EUS"
             }
         },
         {
@@ -136,7 +156,7 @@
                     "resources": [
                         {
                             "apiVersion": "2020-08-01",
-                            "name": "DefaultWorkspace-93934b5f-c9dc-4078-8e65-52910d372a99-EUS",
+                            "name": "DefaultWorkspace-5705e3a2-4b17-4e18-ba2c-30634f0114e3-EUS",
                             "type": "Microsoft.OperationalInsights/workspaces",
                             "location": "eastus",
                             "properties": {}
